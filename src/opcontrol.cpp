@@ -5,7 +5,7 @@
 
 using namespace pros;
 
-
+bool getLauncherSensor();
 
 void opcontrol() {
 
@@ -54,11 +54,11 @@ void opcontrol() {
 
     if (partner.get_digital(DIGITAL_RIGHT) == 1)
     {
-      Flipper.move(30);
+      Flipper.move_absolute(180, 30);
     }
     else if (partner.get_digital(DIGITAL_LEFT) == 1)
     {
-      Flipper.move(-30);
+      Flipper.move_absolute(360, -30);
     }
     else
     {
@@ -67,11 +67,11 @@ void opcontrol() {
     }
 
     //CATAPULT
-/*    if (main.get_digital(DIGITAL_A) == 1 && getLauncherSensor() == 1)
+    if (main.get_digital(DIGITAL_A) == 1 && getLauncherSensor() == 1)
     {
-
-    }*/
-    if (main.get_digital(DIGITAL_A) == 1)
+      Catapult.move(-127);
+    }
+    else if (getLauncherSensor() != 1)
     {
       Catapult.move(-127);
     }

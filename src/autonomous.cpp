@@ -14,6 +14,13 @@ const int TurnLeft = 4;
 void robotFunction(int chassisDirection=0, int chassisSpeed=0, int chassisDistance=0, int catapult=0, int intake=0, int liftHeight=0, int WaitTime=200)
 {
 
+  BR.tare_position();
+  FR.tare_position();
+  BL.tare_position();
+  FL.tare_position();
+  Lift.tare_position();
+  Flipper.tare_position();
+
   if (chassisDirection == Forwards)
   {
     leftDistance = chassisDistance;
@@ -46,12 +53,12 @@ void robotFunction(int chassisDirection=0, int chassisSpeed=0, int chassisDistan
   BL.move_absolute(leftDistance, chassisSpeed);
 
   //CHECKS TO SEE IF MOTOR IS STILL RUNNING TO CONTINUE LOOP
-  while(!(FR.get_position() < chassisDistance-5))
+  while(!(BR.get_position() < chassisDistance-5))
   {
     delay(2);
   }
 
-  FR.tare_position();
+
 
 }
 

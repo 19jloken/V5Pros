@@ -9,7 +9,7 @@ Motor BR(3, E_MOTOR_GEARSET_06);
 Motor FL(4, E_MOTOR_GEARSET_06);
 Motor BL(5, E_MOTOR_GEARSET_06);
 Motor Intake(6, E_MOTOR_GEARSET_06);
-Motor Lift(7, E_MOTOR_GEARSET_36);
+Motor Lift(7, E_MOTOR_GEARSET_36,E_MOTOR_ENCODER_DEGREES);
 Motor Flipper(8, E_MOTOR_GEARSET_18);
 ADIDigitalIn catapultSwitch (1);
 
@@ -34,6 +34,7 @@ void initialize() {
 	FR.set_reversed(true);
 	BR.set_reversed(true);
 	Lift.set_reversed(true);
+	Flipper.tare_position();
 
 	//TELLS THE MOTORS WHAT TO DO WHEN STOPPED
 	Intake.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
