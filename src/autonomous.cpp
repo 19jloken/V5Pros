@@ -1,5 +1,8 @@
 #include "main.h"
 #include "Motors.cpp"
+#include "pros/llemu.hpp"
+
+bool getLauncherSensor();
 
 //ROBOT FUNCTION VARIABLES
 int leftDistance = 0;
@@ -18,8 +21,8 @@ void robotFunction(int chassisDirection=0, int chassisSpeed=0, int chassisDistan
   FR.tare_position();
   BL.tare_position();
   FL.tare_position();
-  Lift.tare_position();
-  Flipper.tare_position();
+  // Lift.tare_position();
+  // Flipper.tare_position();
 
   if (chassisDirection == Forwards)
   {
@@ -53,17 +56,56 @@ void robotFunction(int chassisDirection=0, int chassisSpeed=0, int chassisDistan
   BL.move_absolute(leftDistance, chassisSpeed);
 
   //CHECKS TO SEE IF MOTOR IS STILL RUNNING TO CONTINUE LOOP
-  while(!(BR.get_position() < chassisDistance-5))
+  while((fabs(BR.get_position()) < abs(chassisDistance-5)))
   {
-    delay(2);
+    delay(5);
+    lcd::print(1, "hi %d", BR.get_position());
   }
-
-
 
 }
 
 void autonomous()
 {
-  robotFunction(Forwards,127,100);
-  robotFunction(Backward,127,100);
+
+  Catapult.move(-127);
+  delay(500);
+  Catapult.move(0);
+/*  FR.move(-127);
+  BR.move(-127);
+  FL.move(127);
+  BL.move(127);
+  delay(1000);
+  FR.move(0);
+  BR.move(0);
+  FL.move(0);
+  BL.move(0);
+  delay(2);
+  FR.move(127);
+  BR.move(127);
+  FL.move(127);
+  BL.move(127);*/
+
+/*  FR.move(127);
+  BR.move(127);
+  FL.move(-127);
+  BL.move(-127);
+  delay(450);
+  FR.move(0);
+  BR.move(0);
+  FL.move(0);
+  BL.move(0);
+  delay(2);
+  FR.move(127);
+  BR.move(127);
+  FL.move(127);
+  BL.move(127);
+  delay(400);
+  FR.move(0);
+  BR.move(0);
+  FL.move(0);
+  BL.move(0);*/
+
+
+
+
 }

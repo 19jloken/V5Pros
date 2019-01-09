@@ -6,6 +6,7 @@
 using namespace pros;
 
 bool getLauncherSensor();
+int timerStart;
 
 void opcontrol() {
 
@@ -26,10 +27,12 @@ void opcontrol() {
     }*/
 
     //DRIVE WITH STRAFE
-    FL.move(main.get_analog(ANALOG_LEFT_Y) + ((main.get_digital(E_CONTROLLER_DIGITAL_R1) + main.get_digital(E_CONTROLLER_DIGITAL_R2)) * -63) + ((main.get_digital(E_CONTROLLER_DIGITAL_L1) + main.get_digital(E_CONTROLLER_DIGITAL_L2)) * 63));
+    FL.move(main.get_analog(ANALOG_LEFT_Y) + ((main.get_digital(E_CONTROLLER_DIGITAL_R1) + main.get_digital(E_CONTROLLER_DIGITAL_R2)) * 63) + ((main.get_digital(E_CONTROLLER_DIGITAL_L1) + main.get_digital(E_CONTROLLER_DIGITAL_L2)) * -63));
     FR.move(main.get_analog(ANALOG_RIGHT_Y) + ((main.get_digital(E_CONTROLLER_DIGITAL_R1) + main.get_digital(E_CONTROLLER_DIGITAL_R2)) * -63) + ((main.get_digital(E_CONTROLLER_DIGITAL_L1) + main.get_digital(E_CONTROLLER_DIGITAL_L2)) * 63));
-    BL.move(main.get_analog(ANALOG_LEFT_Y) + ((main.get_digital(E_CONTROLLER_DIGITAL_R1) + main.get_digital(E_CONTROLLER_DIGITAL_R2)) * 63) + ((main.get_digital(E_CONTROLLER_DIGITAL_L1) + main.get_digital(E_CONTROLLER_DIGITAL_L2)) * -63));
+    BL.move(main.get_analog(ANALOG_LEFT_Y) + ((main.get_digital(E_CONTROLLER_DIGITAL_R1) + main.get_digital(E_CONTROLLER_DIGITAL_R2)) * -63) + ((main.get_digital(E_CONTROLLER_DIGITAL_L1) + main.get_digital(E_CONTROLLER_DIGITAL_L2)) * 63));
+    BBL.move(main.get_analog(ANALOG_LEFT_Y) + ((main.get_digital(E_CONTROLLER_DIGITAL_R1) + main.get_digital(E_CONTROLLER_DIGITAL_R2)) * -63) + ((main.get_digital(E_CONTROLLER_DIGITAL_L1) + main.get_digital(E_CONTROLLER_DIGITAL_L2)) * 63));
     BR.move(main.get_analog(ANALOG_RIGHT_Y) + ((main.get_digital(E_CONTROLLER_DIGITAL_R1) + main.get_digital(E_CONTROLLER_DIGITAL_R2)) * 63) + ((main.get_digital(E_CONTROLLER_DIGITAL_L1) + main.get_digital(E_CONTROLLER_DIGITAL_L2)) * -63));
+    BBR.move(main.get_analog(ANALOG_RIGHT_Y) + ((main.get_digital(E_CONTROLLER_DIGITAL_R1) + main.get_digital(E_CONTROLLER_DIGITAL_R2)) * 63) + ((main.get_digital(E_CONTROLLER_DIGITAL_L1) + main.get_digital(E_CONTROLLER_DIGITAL_L2)) * -63));
 
     //INTAKE
     if (partner.get_digital(DIGITAL_R1) == 1)
@@ -47,33 +50,41 @@ void opcontrol() {
     }
 
     //LIFT
-    Lift.move(partner.get_analog(ANALOG_RIGHT_Y)/1.5);
-    Lift.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+    // Lift.move(partner.get_analog(ANALOG_RIGHT_Y));
+    // Lift.set_brake_mode(E_MOTOR_BRAKE_HOLD);
 
     //CAP FLIPPER
 
     if (partner.get_digital(DIGITAL_RIGHT) == 1)
     {
-      Flipper.move_absolute(180, 30);
+      // Flipper.move(40);
     }
     else if (partner.get_digital(DIGITAL_LEFT) == 1)
     {
-      Flipper.move_absolute(360, -30);
+      // Flipper.move(-40);
     }
     else
     {
-      Flipper.move(0);
-      Flipper.set_brake_mode(E_MOTOR_BRAKE_HOLD);
+      // Flipper.move(0);
+      // Flipper.set_brake_mode(E_MOTOR_BRAKE_HOLD);
     }
 
     //CATAPULT
-    if (main.get_digital(DIGITAL_A) == 1 && getLauncherSensor() == 1)
+    if (partner.get_digital(DIGITAL_A) == 1 && getLauncherSensor() == 1)
     {
       Catapult.move(-127);
+      timerStart = pros::millis();
     }
     else if (getLauncherSensor() != 1)
     {
+      if(millis()-timerStart > 500)
+      {
       Catapult.move(-127);
+      }
+      else
+      {
+        Catapult.move(0);
+      }
     }
     else
     {
